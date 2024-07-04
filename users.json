@@ -1,0 +1,33 @@
+[
+  {
+    "username": "dev",
+    "email": "ep23bt004@iitdh.ac.in",
+    "password": "123",
+    "favourite_book": "the tempest",
+    "favourite_author": "william shakespere",
+    "books_issued": [
+      "The Feynman Lectures on Physics",
+      "Introduction to Solid State Physics"
+    ]
+  },
+  {
+    "username": "richa",
+    "email": "cs23bt020@iitdh.ac.in",
+    "password": "123",
+    "favourite_book": "merchant of venice",
+    "favourite_author": "william shakespere",
+    "books_issued": [
+      "Solid State Physics"
+    ]
+  },
+  {
+    "username": "de",
+    "email": "de@de",
+    "password": "de",
+    "favourite_book": "de",
+    "favourite_author": "de",
+    "books_issued": [
+      "Modern Physics for Scientists and Engineers"
+    ]
+  }
+]
