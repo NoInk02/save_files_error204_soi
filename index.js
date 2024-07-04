@@ -121,15 +121,9 @@ app.post("/verify-otp", async (req, res) => {
   try {
     const user = await User.findOne({ email, otp });
     if (user && user.otpExpires > Date.now()) {
-      // OTP is valid, proceed with registration
-      user.username = username;
-      user.password = password;
-      user.favourite_book = favourite_book;
-      user.favourite_author = favourite_author;
-      user.otp = null;
-      user.otpExpires = null;
-      await user.save();
-      res.send("Registration successful. You can now <a href='/'>login</a>.");
+      await User.deleteOne({ email: email, otp: otp });
+      res.send("Registration successful. You can now ");
+
     } else {
       res.status(400).send("Invalid or expired OTP");
     }
@@ -183,13 +177,14 @@ app.post("/register", async (req, res) => {
 
   try {
     const existingUser = await User.findOne({ username });
-    if (existingUser) {
-      console.log("Username already taken:", username); // Debugging log
+    const existingUser2 = await User.findOne({ username });
+    if (existingUser && existingUser2) {
+      console.log("Username or email already taken:", username,email); // Debugging log
       return res.status(400).send("Username already taken");
     }
 
     await newUser.save();
-    res.send('Registration successful. You can now <a href="/">login</a>.');
+    res.send('Registration successful. You can now login.');
   } catch (error) {
     console.error("Error saving user data:", error);
     res.status(500).send("Server error");
@@ -272,42 +267,79 @@ app.post('/return-book', async (req, res) => {
   }
 });
 
-// Route for recommendations
 app.post('/recommendations', async (req, res) => {
   const { booksIssued } = req.body;
+  console.log('Books issued:', booksIssued); // Debugging log
 
   try {
-    const genres = await Book.distinct('genre');
-    const recommendations = [];
+    const issuedBooks = await Book.find({ title: { $in: booksIssued.map(book => book.title) } });
+    console.log('Issued Books:', issuedBooks); // Debugging log
+    const recommendations = new Set();
 
-    for (const genre of genres) {
-      const genreBooks = await Book.find({ genre }).limit(5).exec();
-      recommendations.push(...genreBooks);
-    }
+    await Promise.all(issuedBooks.map(async book => {
+      const { author, genre, department } = book;
+      const matches = await Book.find({
+        $or: [
+          { author: author },
+          { genre: genre },
+          { department: department },
+          { title: { $regex: book.title.split(' ').join('|'), $options: 'i' } }
+        ],
+        title: { $nin: booksIssued.map(book => book.title) }
+      }).limit(5 - recommendations.size);
 
-    res.json(recommendations);
+      matches.forEach(match => {
+        if (recommendations.size < 5) {
+          recommendations.add(match);
+        }
+      });
+    }));
+
+    console.log('Recommendations:', recommendations); // Debugging log
+    res.json([...recommendations]);
+
   } catch (error) {
-    console.error('Error generating recommendations:', error);
-    res.status(500).json({ message: 'Server error.' });
+    console.error('Error fetching recommendations:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-// Cron job to check for overdue books every day at midnight
-cron.schedule('0 0 * * *', async () => {
-  console.log('Running a task every day at midnight to check for overdue books');
-  
-  const now = new Date();
+
+
+
+cron.schedule('0 0 * * *', async () => { // Run every day at midnight
   try {
-    const users = await User.find({ 'books_issued.due_date': { $lt: now } });
-    for (const user of users) {
-      user.books_issued.forEach(book => {
+    const users = await User.find({});
+    users.forEach(async (user) => {
+      const now = new Date();
+      user.books_issued = user.books_issued.filter(book => {
         if (book.due_date < now) {
-          console.log(`Book titled "${book.title}" is overdue for user ${user.email}`);
+          // Automatically return the book
+          returnBook(book.title, user.email);
+          return false; // Remove the book from issued list
         }
+        return true;
       });
+      await user.save();
+    });
+  } catch (error) {
+    console.error("Error checking overdue books:", error);
+  }
+});
+
+app.get('/profile', async (req, res) => {
+  const email = req.query.email;
+
+  try {
+    const user = await User.findOne({ email });
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).send("User not found");
     }
   } catch (error) {
-    console.error('Error checking overdue books:', error);
+    console.error("Error querying user data:", error);
+    res.status(500).send("Server error");
   }
 });
 
