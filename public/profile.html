@@ -98,7 +98,7 @@
                     document.getElementById('email').textContent = data.email;
                     document.getElementById('fav-author').textContent = data.favourite_author;
                     document.getElementById('fav-book').textContent = data.favourite_book;
-
+                    console.log(data._id);
                     const booksIssuedList = document.getElementById('books-issued');
                     booksIssuedList.innerHTML = '';
                     if (data.books_issued.length > 0) {
