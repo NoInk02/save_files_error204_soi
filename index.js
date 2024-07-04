@@ -7,6 +7,9 @@ const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const cron = require('node-cron');
 
+
+
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
@@ -211,12 +214,30 @@ app.get('/search', async (req, res) => {
   }
 });
 
+// Function to send reminder email
+const sendReminderEmail2 = async (user, book) => {
+  const mailOptions = {
+    from: 'ded66521@gmail.com', // Replace with your email
+    to: user.email,
+    subject: 'Reminder: Please return overdue book',
+    text: `Dear ${user.username},\n\nThis is a reminder that you have not returned the book "${book.title}" which was due on ${user.books_issued.dueDate}.\n\nPlease return the book at your earliest convenience.\n\nThank you.\n\nBest regards,\nLibrary Management System`
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log(`Reminder email sent to ${user.email} for book "${book.title}".`);
+  } catch (error) {
+    console.error('Error sending reminder email:', error);
+  }
+};
+
+
 // Route for adding books to cart
 app.post('/add-to-cart', async (req, res) => {
   const { email, title } = req.body;
   const issueDate = new Date();
   const dueDate = new Date(issueDate);
-  dueDate.setDate(issueDate.getDate() + 1); // Set due date to 1 days after issue date
+  dueDate.setMinutes(issueDate.getMinutes() + 1); // Set due date to 10 minutes after issue date
 
   try {
     const user = await User.findOne({ email });
@@ -228,6 +249,21 @@ app.post('/add-to-cart', async (req, res) => {
 
         await book.save();
         await user.save();
+
+        console.log(`Book "${book.title}" added to cart for user ${user.username}.`);
+        
+        // Schedule email reminder after 10 minutes
+        const reminderTime = new Date();
+        reminderTime.setMinutes(reminderTime.getMinutes() + 10); // Schedule reminder 10 minutes from now
+        const cronString = `${reminderTime.getMinutes()} ${reminderTime.getHours()} * * *`;
+        cron.schedule(cronString, async () => {
+          try {
+            console.log(`Sending reminder email to ${user.email} for book "${book.title}".`);
+            await sendReminderEmail2(user, book);
+          } catch (error) {
+            console.error('Error scheduling reminder email:', error);
+          }
+        });
 
         res.send("Book added to cart and count updated successfully.");
       } else {
@@ -307,20 +343,36 @@ app.post('/recommendations', async (req, res) => {
 
 
 
-cron.schedule('0 0 * * *', async () => { // Run every day at midnight
+// Function to send reminder email
+const sendReminderEmail = async (user, book) => {
+  console.log("HMM");
+  const mailOptions = {
+    from: 'ded66521@gmail.com', // Replace with your email
+    to: user.email,
+    subject: 'Reminder: Please return overdue book',
+    text: `Dear ${user.username},\n\nThis is a reminder that you have not returned the book "${book.title}" which was due on ${book.due_date}.\n\nPlease return the book at your earliest convenience.\n\nThank you.\n\nBest regards,\nLibrary Management System`
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Reminder email sent:', info.response);
+  } catch (error) {
+    console.error('Error sending reminder email:', error);
+  }
+};
+
+// Schedule cron job to check overdue books every day at midnight
+cron.schedule('20 15 * * *', async () => {
   try {
     const users = await User.find({});
     users.forEach(async (user) => {
       const now = new Date();
-      user.books_issued = user.books_issued.filter(book => {
+      console.log(now);
+      user.books_issued.forEach(async (book) => {
         if (book.due_date < now) {
-          // Automatically return the book
-          returnBook(book.title, user.email);
-          return false; // Remove the book from issued list
+          await sendReminderEmail(user, book); // Send reminder email for overdue book
         }
-        return true;
       });
-      await user.save();
     });
   } catch (error) {
     console.error("Error checking overdue books:", error);
