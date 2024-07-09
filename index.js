@@ -49,15 +49,15 @@ const bookSchema = new mongoose.Schema({
   publisher_id: Number
 });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model("users", userSchema);
 const Book = mongoose.model("Book", bookSchema, 'book');
 
 // Nodemailer setup
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'ded66521@gmail.com', // Replace with your email
-    pass: 'nbnl xhhx zmqz ymvb'         // Replace with your email password
+    user: 'ded66521@gmail.com', 
+    pass: 'nbnl xhhx zmqz ymvb'         
   }
 });
 
@@ -180,7 +180,7 @@ app.post("/register", async (req, res) => {
 
   try {
     const existingUser = await User.findOne({ username });
-    const existingUser2 = await User.findOne({ username });
+    const existingUser2 = await User.findOne({ email });
     if (existingUser && existingUser2) {
       console.log("Username or email already taken:", username,email); // Debugging log
       return res.status(400).send("Username already taken");
@@ -237,7 +237,7 @@ app.post('/add-to-cart', async (req, res) => {
   const { email, title } = req.body;
   const issueDate = new Date();
   const dueDate = new Date(issueDate);
-  dueDate.setMinutes(issueDate.getMinutes() + 1); // Set due date to 10 minutes after issue date
+  dueDate.setMinutes(issueDate.getMinutes() + 10); // Set due date to 10 minutes after issue date
 
   try {
     const user = await User.findOne({ email });
@@ -340,45 +340,6 @@ app.post('/recommendations', async (req, res) => {
   }
 });
 
-
-
-
-// Function to send reminder email
-const sendReminderEmail = async (user, book) => {
-  console.log("HMM");
-  const mailOptions = {
-    from: 'ded66521@gmail.com', // Replace with your email
-    to: user.email,
-    subject: 'Reminder: Please return overdue book',
-    text: `Dear ${user.username},\n\nThis is a reminder that you have not returned the book "${book.title}" which was due on ${book.due_date}.\n\nPlease return the book at your earliest convenience.\n\nThank you.\n\nBest regards,\nLibrary Management System`
-  };
-
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Reminder email sent:', info.response);
-  } catch (error) {
-    console.error('Error sending reminder email:', error);
-  }
-};
-
-// Schedule cron job to check overdue books every day at midnight
-cron.schedule('20 15 * * *', async () => {
-  try {
-    const users = await User.find({});
-    users.forEach(async (user) => {
-      const now = new Date();
-      console.log(now);
-      user.books_issued.forEach(async (book) => {
-        if (book.due_date < now) {
-          await sendReminderEmail(user, book); // Send reminder email for overdue book
-        }
-      });
-    });
-  } catch (error) {
-    console.error("Error checking overdue books:", error);
-  }
-});
-
 app.get('/profile', async (req, res) => {
   const email = req.query.email;
 
@@ -394,6 +355,18 @@ app.get('/profile', async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+
+// Route to get the last 5 books (New Arrivals)
+app.get('/new-arrivals', async (req, res) => {
+  try {
+    const books = await Book.find().sort({ _id: -1 }).limit(5); // Sort by _id in descending order and limit to 5
+    res.json(books);
+  } catch (error) {
+    console.error("Error fetching new arrivals:", error);
+    res.status(500).send("Server error");
+  }
+});
+
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
