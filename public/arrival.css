@@ -1,18 +1,25 @@
-/* styles.css */
-
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f1f1f1;
+    padding: 0;
+}
+
+header {
+    width: 100%;
+    background-color: white;
+    color: black;
+    padding: 10px 0;
+    position: relative;
+    z-index: 10;
 }
 
 .navbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color:#6B8A7A;
+    background-color: #F1f1f1;
     padding: 10px 20px;
-    height: 100px;
+    height: 80px;
+    z-index: 10;
 }
 
 .navbar-brand {
@@ -21,9 +28,8 @@ body {
 }
 
 .navbar-logo {
-    
-width: 160px;
-    height: 80px;
+    width: 100px;
+    height: 70px;
 }
 
 .navbar-menu {
@@ -31,7 +37,7 @@ width: 160px;
     display: flex;
     margin: 0;
     padding: 0;
-    margin-left: auto; /* This will push the menu to the right */
+    margin-left: auto;
 }
 
 .navbar-menu li {
@@ -39,35 +45,34 @@ width: 160px;
 }
 
 .navbar-menu a {
-    color: #fff;
-   text-decoration: none;
-   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: black;
+    text-decoration: none;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     padding: 8px 16px;
     font-size: 25px;
     display: block;
 }
 
-
 .navbar-menu a:hover {
-    background-color:#575757;
+    background-color: #575757;
     border-radius: 4px;
 }
 
-
 .navbar-menu li a {
-    color: white;
+    color: black;
     text-decoration: none;
-    padding: 10px;
-    display: block;
+    padding: 10px 20px;
+    display: inline-block;
 }
 
 .navbar-menu li a:hover {
     background-color: #575757;
+    color: white;
     border-radius: 5px;
 }
 
-.navbar-menu .btnLogin-popup{
-    width:130px;
+.navbar-menu .btnLogin-popup {
+    width: 130px;
     height: 50px;
     background: transparent;
     border: 2px solid;
@@ -81,9 +86,8 @@ width: 160px;
     transition: .5s;
 }
 
-.navbar-menu .btnLogin-popup:hover{
+.navbar-menu .btnLogin-popup:hover {
     background: #575757;
-
 }
 
 .footer {
@@ -109,7 +113,6 @@ width: 160px;
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    
 }
 
 .row.g-0.bg-body-secondary {
@@ -118,13 +121,13 @@ width: 160px;
 }
 
 h5, p, a {
-    color: black; /* Set text color to black */
+    color: black;
 }
 
 a.stretched-link {
-    text-decoration: none; /* Remove underline from link */
+    text-decoration: none;
 }
 
-.w-100{
+.w-100 {
     height: 180px;
 }
