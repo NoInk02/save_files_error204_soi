@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Write a Review</title>
+</head>
+<body>
+  <h1>Write a Review</h1>
+  <form id="reviewForm">
+    <input type="hidden" id="email" name="email" />
+    <input type="hidden" id="title" name="title" />
+    <textarea id="review" name="review" placeholder="Write your review here..."></textarea>
+    <button type="submit">Submit Review</button>
+  </form>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      document.getElementById('email').value = params.get('email');
+      document.getElementById('title').value = params.get('title');
+    });
+
+    document.getElementById('reviewForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+
+      const response = await fetch('/submit-review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+      alert(result.message);
+    });
+  </script>
+</body>
+</html>

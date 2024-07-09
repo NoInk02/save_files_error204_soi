@@ -14,23 +14,32 @@
                 <img src="https://www.vidyamandir.com/Think-IIT-Think-VMC/assets/images/iit/iit-dharwad.png" alt="Brand Logo" class="navbar-logo">
             </div>
             <ul class="navbar-menu">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="service.html">Services</a></li>
-            <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="about.html">ABOUT</a></li>
+                <li><a href="service.html">SERVICES</a></li>
+            <li><a href="contact.html">CONTACT</a></li>
             </ul>
         </nav>
     </header>
 
-    <div id="ff"><h1>Search Results</h1>
+    <div class="search-header">
+        <img src="/search.png" alt="Search Image" class="search-image">
+        <div class="search-text">
+            <h1>Search Results</h1>
+            <p>If you wish to borrow any of these books, add them to your cart.<br>
+            You can view your cart at the bottom of this page.</p>
+        </div>
+    </div>
+
     <div id="search-results">
         <!-- Search results will be dynamically inserted here -->
     </div>
 
-    <div id="fc"><h1>Cart</h1>
-    <div id="cart-items">
-        <!-- Cart items will be dynamically inserted here -->
-    </div>
+    <div id="fc">
+        <h1>CART</h1>
+        <div id="cart-items">
+            <!-- Cart items will be dynamically inserted here -->
+        </div>
 
     <div id="message" style="color: red;"></div> <!-- Message for issuing limit -->
 
@@ -66,7 +75,7 @@ function fetchSearchResults(category, value) {
                             <p><strong>Vendor ID:</strong> ${book.vendor_id}</p>
                             <p><strong>Publisher:</strong> ${book.publisher}</p>
                             <p><strong>Publisher ID:</strong> ${book.publisher_id}</p>
-                            <button onclick="addToCart('${book.title}')">Add to Cart</button>
+                            <button class="add-to-cart-button" onclick="addToCart('${book.title}')">Add to Cart</button>
                         `;
                         resultsDiv.appendChild(bookDiv);
                     }
@@ -89,7 +98,7 @@ function matchesSearchCriteria(book, category, value) {
 fetchSearchResults(category, value);
 
 // Function to add book to cart and decrease count
-function addToCart(bookTitle) {
+function addToCart(bookTitle, bookImage) {
     console.log('Fetching profile for email:', email);
     fetch(`/profile?email=${encodeURIComponent(email)}`)
         .then(response => response.json())
@@ -110,8 +119,10 @@ function addToCart(bookTitle) {
                 .then(message => {
                     const cartItemsDiv = document.getElementById('cart-items');
                     const cartItem = document.createElement('div');
+                    cartItem.classList.add('cart-item');
                     cartItem.innerHTML = `
-                        <p>${bookTitle} added to your cart.</p>
+                        <div class="cart-item-text">${bookTitle} added to your cart.</div>
+                        <img src="/cart.png" alt="${bookTitle} Image" class="cart-item-image">
                     `;
                     cartItemsDiv.appendChild(cartItem);
 
@@ -127,7 +138,6 @@ function addToCart(bookTitle) {
             console.error('Error fetching profile:', error);
         });
 }
-
     </script>
 
     <footer class="footer">
@@ -137,7 +147,7 @@ function addToCart(bookTitle) {
             <p>Phone:  (0836) 221 2824</p>
             <p>Address: IIT Dharwad, Chikkamalligwad,Karnataka-560007</p>
             <br>
-            <p style="font-family: Arial, Helvetica, sans-serif;">Copyrights &#169 2023 IIT Dharwad Central Library. All Rights Reserved.</p>
+            <p style="font-family: Arial, Helvetica, sans-serif;">Copyrights &#169 2024 IIT Dharwad Central Library. All Rights Reserved.</p>
         </div>
     </footer>
 </body>

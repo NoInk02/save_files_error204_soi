@@ -49,6 +49,14 @@ const bookSchema = new mongoose.Schema({
   publisher_id: Number
 });
 
+const reviewSchema = new mongoose.Schema({
+  email: String,
+  title: String,
+  review: String,
+  review_date: Date
+});
+
+const Review = mongoose.model("Review", reviewSchema);
 const User = mongoose.model("users", userSchema);
 const Book = mongoose.model("Book", bookSchema, 'book');
 
@@ -278,7 +286,6 @@ app.post('/add-to-cart', async (req, res) => {
   }
 });
 
-// Route for returning books
 app.post('/return-book', async (req, res) => {
   const { email, title } = req.body;
 
@@ -293,7 +300,11 @@ app.post('/return-book', async (req, res) => {
       await user.save();
       await book.save();
 
-      res.json({ message: 'Book returned successfully.' });
+      // Redirect to review page with book title as a query parameter
+      res.json({
+        message: 'Book returned successfully. Would you like to write a review?',
+        redirectToReview: `/review.html?email=${email}&title=${title}`
+      });
     } else {
       res.status(404).json({ message: 'User or book not found.' });
     }
@@ -302,6 +313,27 @@ app.post('/return-book', async (req, res) => {
     res.status(500).json({ message: 'Server error.' });
   }
 });
+
+app.post('/submit-review', async (req, res) => {
+  const { email, title, review } = req.body;
+
+  const newReview = new Review({
+    email,
+    title,
+    review,
+    review_date: new Date()
+  });
+
+  try {
+    await newReview.save();
+    res.json({ message: 'Review submitted successfully.' });
+  } catch (error) {
+    console.error('Error submitting review:', error);
+    res.status(500).json({ message: 'Server error.' });
+  }
+});
+
+
 
 app.post('/recommendations', async (req, res) => {
   const { booksIssued } = req.body;
