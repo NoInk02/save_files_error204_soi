@@ -42,42 +42,116 @@
 
         // Function to fetch search results based on category and value
         function fetchSearchResults(category, value) {
-            fetch(`/search?category=${encodeURIComponent(category)}&value=${encodeURIComponent(value)}`)
-                .then(response => response.json())
-                .then(data => {
-                    const resultsDiv = document.getElementById('search-results');
-                    resultsDiv.innerHTML = '';
-                    if (data.message) {
-                        resultsDiv.textContent = data.message;
-                    } else {
-                        // Filter and display only matching books
-                        data.forEach(book => {
-                            if (matchesSearchCriteria(book, category, value)) {
-                                const bookDiv = document.createElement('div');
-                                bookDiv.classList.add('search-result');
-                                bookDiv.innerHTML = `
-                                    <p><strong>Title:</strong> ${book.title}</p>
-                                    <p><strong>Description:</strong> ${book.description}</p>
-                                    <p><strong>Author:</strong> ${book.author}</p>
-                                    <p><strong>Genre:</strong> ${book.genre}</p>
-                                    <p><strong>Department:</strong> ${book.department}</p>
-                                    <p><strong>Count:</strong> <span id="count-${book.title}">${book.count}</span></p>
-                                    <p><strong>Vendor:</strong> ${book.vendor}</p>
-                                    <p><strong>Vendor ID:</strong> ${book.vendor_id}</p>
-                                    <p><strong>Publisher:</strong> ${book.publisher}</p>
-                                    <p><strong>Publisher ID:</strong> ${book.publisher_id}</p>
-                                    
-                                `;
-                                resultsDiv.appendChild(bookDiv);
-                            }
+    fetch(`/search?category=${encodeURIComponent(category)}&value=${encodeURIComponent(value)}`)
+        .then(response => response.json())
+        .then(data => {
+            const resultsDiv = document.getElementById('search-results');
+            resultsDiv.innerHTML = '';
+            if (data.message) {
+                resultsDiv.textContent = data.message;
+            } else {
+                // Filter and display only matching books
+                data.forEach(book => {
+                    if (matchesSearchCriteria(book, category, value)) {
+                        const bookDiv = document.createElement('div');
+                        bookDiv.classList.add('search-result');
+                        bookDiv.innerHTML = `
+                            <p><strong>Title:</strong> ${book.title}</p>
+                            <p><strong>Author:</strong> ${book.author}</p>
+                            <p><strong>Count:</strong> <span id="count-${book.title}">${book.count}</span></p>
+                            <button class="view-book-btn" data-title="${book.title}">View Book Details</button>
+                        `;
+                        resultsDiv.appendChild(bookDiv);
+
+                        // Add event listener for view details button
+                        const viewDetailsBtn = bookDiv.querySelector('.view-book-btn');
+                        viewDetailsBtn.addEventListener('click', () => {
+                            viewBookDetails(book.title);
                         });
                     }
-                })
-                .catch(error => {
-                    console.error('Error fetching search results:', error);
-                    document.getElementById('search-results').textContent = 'Error fetching search results.';
                 });
-        }
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching search results:', error);
+            document.getElementById('search-results').textContent = 'Error fetching search results.';
+        });
+}
+function viewBookDetails(title) {
+    fetch(`/book-details?title=${encodeURIComponent(title)}`)
+        .then(response => response.json())
+        .then(book => {
+            // Display book details and reviews
+            const detailsDiv = document.createElement('div');
+            detailsDiv.innerHTML = `
+                <p><strong>Title:</strong> ${book.title}</p>
+                <p><strong>Description:</strong> ${book.description}</p>
+                <p><strong>Author:</strong> ${book.author}</p>
+                <p><strong>Genre:</strong> ${book.genre}</p>
+                <p><strong>Department:</strong> ${book.department}</p>
+                <p><strong>Count:</strong> <span id="count-${book.title}">${book.count}</span></p>
+                <p><strong>Vendor:</strong> ${book.vendor}</p>
+                <p><strong>Vendor ID:</strong> ${book.vendor_id}</p>
+                <p><strong>Publisher:</strong> ${book.publisher}</p>
+                <p><strong>Publisher ID:</strong> ${book.publisher_id}</p>
+                <h3>Rating:</h3>
+                
+                <h3>Reviews:</h3>
+                <ul id="reviews-list"></ul>
+            `;
+
+            // Append reviews to detailsDiv
+            const reviewsList = detailsDiv.querySelector('#reviews-list');
+            if (book.reviews.length > 0) {
+                book.reviews.forEach(review => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <p><strong>Email:</strong> ${review.email}</p>
+                        <p><strong>Review:</strong> ${review.review}</p>
+                        <div class="rating">
+                    ${getStarRatingHTML(review.rating)}
+                </div>
+                    `;
+                    reviewsList.appendChild(li);
+                });
+            } else {
+                const li = document.createElement('li');
+                li.textContent = 'No reviews yet.';
+                reviewsList.appendChild(li);
+            }
+
+            // Replace existing content with book details
+            const resultsDiv = document.getElementById('search-results');
+            resultsDiv.innerHTML = '';
+            resultsDiv.appendChild(detailsDiv);
+        })
+        .catch(error => {
+            console.error('Error fetching book details:', error);
+            alert('Error fetching book details.');
+        });
+}
+
+// Function to generate HTML for star rating based on a given rating
+function getStarRatingHTML(rating) {
+    const maxStars = 5;
+    const fullStars = Math.floor(rating);
+    const halfStars = Math.ceil(rating - fullStars);
+    const emptyStars = maxStars - fullStars - halfStars;
+
+    let starsHTML = '';
+    for (let i = 0; i < fullStars; i++) {
+        starsHTML += '<span class="star">&#9733;</span>';
+    }
+    if (halfStars > 0) {
+        starsHTML += '<span class="star">&#9734;</span>';
+    }
+    for (let i = 0; i < emptyStars; i++) {
+        starsHTML += '<span class="star">&#9734;</span>';
+    }
+
+    return starsHTML;
+}
+
 
         // Function to check if a book matches the search criteria
         function matchesSearchCriteria(book, category, value) {

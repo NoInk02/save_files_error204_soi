@@ -1,14 +1,80 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Write a Review</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+    textarea {
+      padding: 10px;
+      margin-bottom: 10px;
+      resize: vertical;
+      min-height: 100px;
+      font-size: 16px;
+    }
+    .rating {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 36px;
+    }
+    .rating input {
+      display: none;
+    }
+    .rating label {
+      cursor: pointer;
+      color: #ccc;
+      font-size: 36px;
+      transition: color 0.2s;
+    }
+    .rating input:checked ~ label,
+    .rating input:checked ~ label:hover,
+    .rating label:hover ~ input:checked ~ label {
+      color: #f90;
+    }
+    .rating input:checked ~ label:hover ~ label {
+      color: #ccc; /* Unhighlight subsequent stars */
+    }
+    button {
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+      align-self: center;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
 </head>
 <body>
   <h1>Write a Review</h1>
   <form id="reviewForm">
     <input type="hidden" id="email" name="email" />
     <input type="hidden" id="title" name="title" />
-    <textarea id="review" name="review" placeholder="Write your review here..."></textarea>
+    <textarea id="review" name="review" placeholder="Write your review here..." required></textarea>
+    <div class="rating">
+      <input type="radio" id="star1" name="rating" value="1" /><label for="star1">&#9733;</label>
+      <input type="radio" id="star2" name="rating" value="2" /><label for="star2">&#9733;</label>
+      <input type="radio" id="star3" name="rating" value="3" /><label for="star3">&#9733;</label>
+      <input type="radio" id="star4" name="rating" value="4" /><label for="star4">&#9733;</label>
+      <input type="radio" id="star5" name="rating" value="5" /><label for="star5">&#9733;</label>
+    </div>
     <button type="submit">Submit Review</button>
   </form>
 
@@ -19,19 +85,37 @@
       document.getElementById('title').value = params.get('title');
     });
 
+    document.querySelectorAll('.rating input').forEach((input) => {
+      input.addEventListener('change', () => {
+        const selectedRating = input.value;
+        document.querySelectorAll('.rating label').forEach((label, index) => {
+          if (index < selectedRating) {
+            label.style.color = '#f90';
+          } else {
+            label.style.color = '#ccc';
+          }
+        });
+      });
+    });
+
     document.getElementById('reviewForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const formData = new FormData(e.target);
       const data = Object.fromEntries(formData);
 
-      const response = await fetch('/submit-review', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
+      try {
+        const response = await fetch('/submit-review', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
 
-      const result = await response.json();
-      alert(result.message);
+        const result = await response.json();
+        alert(result.message);
+      } catch (error) {
+        alert('An error occurred while submitting your review. Please try again later.');
+        console.error('Error submitting review:', error);
+      }
     });
   </script>
 </body>

@@ -53,6 +53,7 @@ const reviewSchema = new mongoose.Schema({
   email: String,
   title: String,
   review: String,
+  rating: Number, 
   review_date: Date
 });
 
@@ -314,13 +315,15 @@ app.post('/return-book', async (req, res) => {
   }
 });
 
+// Route to submit a review with rating
 app.post('/submit-review', async (req, res) => {
-  const { email, title, review } = req.body;
+  const { email, title, review, rating } = req.body;
 
   const newReview = new Review({
     email,
     title,
     review,
+    rating,
     review_date: new Date()
   });
 
@@ -332,6 +335,41 @@ app.post('/submit-review', async (req, res) => {
     res.status(500).json({ message: 'Server error.' });
   }
 });
+
+
+app.get('/book-details', async (req, res) => {
+  const title = req.query.title;
+
+  try {
+    const book = await Book.findOne({ title });
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+
+    const reviews = await Review.find({ title });
+
+    // Construct response object with book details and reviews
+    const bookDetails = {
+      title: book.title,
+      description: book.description,
+      author: book.author,
+      genre: book.genre,
+      department: book.department,
+      count: book.count,
+      vendor: book.vendor,
+      vendor_id: book.vendor_id,
+      publisher: book.publisher,
+      publisher_id: book.publisher_id,
+      reviews: reviews // Include reviews in the response
+    };
+
+    res.json(bookDetails);
+  } catch (error) {
+    console.error('Error fetching book details:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 
 
 
