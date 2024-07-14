@@ -1,0 +1,272 @@
+/* Set default styles for body and html elements */
+body, html {
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    width: 100%; /* Set width to 100% */
+    height: 100%; /* Set height to 100% */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+/* Style for the header */
+header {
+    width: 100%; /* Full width */
+    background-color: white; /* White background */
+    color: black; /* Black text color */
+    padding: 10px 0; /* Vertical padding */
+    position: relative; /* Position relative to its normal position */
+    z-index: 10; /* Stack order */
+}
+
+/* Style for the navbar */
+.navbar {
+    display: flex; /* Flexbox layout */
+    align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Space out items */
+    background-color: #F1f1f1; /* Light grey background */
+    padding: 10px 20px; /* Padding */
+    height: 80px; /* Fixed height */
+    z-index: 10; /* Stack order */
+}
+
+/* Style for the navbar brand section */
+.navbar-brand {
+    display: flex; /* Flexbox layout */
+    align-items: center; /* Center items vertically */
+}
+
+/* Style for the navbar logo */
+.navbar-logo {
+    width: 100px; /* Fixed width */
+    height: 70px; /* Fixed height */
+}
+
+/* Style for the navbar menu */
+.navbar-menu {
+    list-style: none; /* Remove default list style */
+    display: flex; /* Flexbox layout */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    margin-left: auto; /* Push the menu to the right */
+}
+
+/* Style for the navbar menu items */
+.navbar-menu li {
+    margin-left: 20px; /* Left margin */
+}
+
+/* Style for the navbar menu links */
+.navbar-menu a {
+    color: black; /* Black text color */
+    text-decoration: none; /* Remove underline */
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /* Font family */
+    padding: 8px 16px; /* Padding */
+    font-size: 25px; /* Font size */
+    display: block; /* Display as block */
+}
+
+/* Hover effect for navbar menu links */
+.navbar-menu a:hover {
+    background-color: #575757; /* Dark grey background */
+    border-radius: 4px; /* Rounded corners */
+}
+
+/* Specific styles for navbar menu links */
+.navbar-menu li a {
+    color: black; /* Black text color */
+    text-decoration: none; /* Remove underline */
+    padding: 10px 20px; /* Padding */
+    display: inline-block; /* Display as inline block */
+}
+
+/* Hover effect for specific navbar menu links */
+.navbar-menu li a:hover {
+    background-color: #575757; /* Dark grey background */
+    color: white; /* White text color */
+    border-radius: 5px; /* Rounded corners */
+}
+
+/* Style for login button in navbar */
+.navbar-menu .btnLogin-popup {
+    width: 130px; /* Fixed width */
+    height: 50px; /* Fixed height */
+    background: transparent; /* Transparent background */
+    border: 2px solid; /* Solid border */
+    outline: none; /* Remove outline */
+    border-radius: 6px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    font-size: 25px; /* Font size */
+    color: white; /* White text color */
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; /* Font family */
+    font-weight: 500; /* Bold text */
+    transition: .5s; /* Transition effect */
+}
+
+/* Hover effect for login button */
+.navbar-menu .btnLogin-popup:hover {
+    background: #575757; /* Dark grey background */
+}
+
+/* Style for form box heading */
+.form-box h2 {
+    font-size: 25px; /* Font size */
+    color: black; /* Black text color */
+    text-align: center; /* Center text */
+}
+
+/* Style for input box */
+.input-box {
+    position: relative; /* Position relative */
+    width: 100%; /* Full width */
+    height: 100px; /* Fixed height */
+    margin: 30px 0; /* Vertical margin */
+}
+
+/* Style for the footer */
+.footer {
+    background-color: #000; /* Black background */
+    color: white; /* White text color */
+    padding: 20px; /* Padding */
+    text-align: center; /* Center text */
+}
+
+/* Style for footer content */
+.footer-content {
+    max-width: 800px; /* Maximum width */
+    margin: auto; /* Center align */
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; /* Font family */
+}
+
+/* Style for footer headings and paragraphs */
+.footer-content h3, .footer-content p {
+    margin: 5px 0; /* Vertical margin */
+}
+
+/* Style for container */
+.container {
+    display: flex; /* Flexbox layout */
+    justify-content: space-between; /* Space out items */
+    padding: 10px; /* Padding */
+    margin: 0; /* Remove margin */
+    background-color: #4A249D; /* Background color */
+    width: 100%; /* Full width */
+    font-size: 30px; /* Font size */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+/* Style for text box */
+.text-box {
+    flex: 1; /* Flex grow */
+    background-color: #4A249D; /* Background color */
+    color: white; /* White text color */
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /* Font family */
+    border-radius: 5px; /* Rounded corners */
+    margin-right: 10px; /* Right margin */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+/* Style for image container */
+#img {
+    flex: 1; /* Flex grow */
+    padding: 10px; /* Padding */
+    box-sizing: border-box; /*
+    /* Include padding and border in element's total width and height */
+}
+
+/* Style for carousel images */
+.carousel-item img {
+    width: 100%; /* Make sure images use the full width of the container */
+    height: auto; /* Maintain aspect ratio */
+    height: 430px; /* Fixed height */
+    object-fit: cover; /* Cover the container while maintaining aspect ratio */
+}
+
+/* Background color style */
+.bg {
+    background-color: #4A249D; /* Background color */
+}
+
+/* Font style for text-box */
+.text-box {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /* Font family */
+    font-size: 18px; /* Font size */
+}
+
+/* Style for scrollspy container */
+.scrollspy-container {
+    margin: 20px; /* Margin */
+    background-color: white; /* White background */
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /* Font family */
+    font-size: 20px; /* Font size */
+}
+
+/* Style for secondary navbar */
+.secondary-navbar {
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+    color: white; /* White text color */
+    padding: 10px; /* Padding */
+    border-radius: 5px; /* Rounded corners */
+    margin-bottom: 20px; /* Bottom margin */
+}
+
+/* Style for secondary navbar links */
+.secondary-navbar .nav-link {
+    color: white; /* White text color */
+    text-decoration: none; /* Remove underline */
+    font-size: 30px; /* Font size */
+    padding-right: 20px; /* Right padding */
+    align-items: start; /* Align items to the start */
+}
+
+/* Hover effect for secondary navbar links */
+.secondary-navbar .nav-link:hover {
+    background-color: #4A249D; /* Background color */
+    color: white; /* White text color */
+}
+
+/* Active state for secondary navbar links */
+.secondary-navbar .nav-link.active {
+    background-color: #4A249D; /* Active background color */
+    color: #fff; /* Active text color */
+}
+
+/* Style for scrollspy example */
+.scrollspy-example {
+    height: 400px; /* Fixed height */
+    overflow-y: auto; /* Vertical scroll */
+    background-color: white; /* White background */
+    padding: 20px; /* Padding */
+    border: 2px solid black; /* Black border */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+}
+
+/* Active state for scrollspy items */
+.scrollspy-example .active {
+    background-color: #333; /* Active background color */
+    color: #fff; /* Active text color */
+}
+
+/* Important active state for secondary navbar links */
+.secondary-navbar .nav-link.active {
+    background-color: #4A249D !important; /* Active background color */
+    color: #fff; /* Active text color */
+}
+
+/* Active item style for scrollspy */
+.scrollspy-example .active-item {
+    background-color: #333 !important; /* Active background color */
+    color: #fff; /* Active text color */
+    border-left: 4px solid #ff5722; /* Left border for active item */
+}
+
+/* Style for the text box container */
+.text-boxs {
+    width: 350px; /* Fixed width */
+    height: 530px; /* Fixed height */
+    border-right: 1px solid #ddd; /* Right border */
+    font-size: 20px; /* Font size */
+    padding: 10px; /* Padding */
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; /* Font family */
+    background: #6B8A7A; /* Background color */
+    color: white; /* White text color */
+}

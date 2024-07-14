@@ -1,0 +1,65 @@
+[{
+  "_id": {
+    "$oid": "66946014e73a5dd4ec48a2ae"
+  },
+  "email": "ep23bt004@iitdh.ac.in",
+  "title": "Clean Code: A Handbook of Agile Software Craftsmanship",
+  "review": "its nice",
+  "rating": 4,
+  "review_date": {
+    "$date": "2024-07-14T23:32:36.317Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66946025e73a5dd4ec48a2b9"
+  },
+  "email": "ep23bt004@iitdh.ac.in",
+  "title": "Code Complete: A Practical Handbook of Software Construction",
+  "review": "good",
+  "rating": 5,
+  "review_date": {
+    "$date": "2024-07-14T23:32:53.534Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "669461eae73a5dd4ec48a2e2"
+  },
+  "email": "ep23bt004@iitdh.ac.in",
+  "title": "Solid State Physics",
+  "review": "nice",
+  "rating": 4,
+  "review_date": {
+    "$date": "2024-07-14T23:40:26.869Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6694622ef272693b15eb0f4e"
+  },
+  "email": "ep23bt004@iitdh.ac.in",
+  "title": "Statistical Physics",
+  "review": "not good",
+  "rating": 2,
+  "review_date": {
+    "$date": "2024-07-14T23:41:34.445Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6694630af272693b15eb0f80"
+  },
+  "email": "cs23bt020@iitdh.ac.in",
+  "title": "Artificial Intelligence: A Modern Approach",
+  "review": "good",
+  "rating": 5,
+  "review_date": {
+    "$date": "2024-07-14T23:45:14.460Z"
+  },
+  "__v": 0
+}]

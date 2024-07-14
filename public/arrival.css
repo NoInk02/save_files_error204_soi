@@ -1,0 +1,196 @@
+/* Reset margin and padding for the whole document */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Header styles */
+header {
+    width: 100%; /* Full width */
+    background-color: white; /* White background */
+    color: black; /* Black text color */
+    padding: 10px 0; /* Padding top and bottom 10px, left and right 0 */
+    position: relative; /* Relative positioning */
+    z-index: 10; /* Stack order */
+}
+
+/* Navbar styles */
+.navbar {
+    display: flex; /* Flex container */
+    align-items: center; /* Center align items vertically */
+    justify-content: space-between; /* Space evenly between items */
+    /* background-color:#36ba98;   */
+    /* background-color: #50c878;   */
+    /* background-color: #31cd89;   */
+    background-color: #F1f1f1; /* Light gray background */
+    padding: 10px 20px; /* Padding top and bottom 10px, left and right 20px */
+    height: 80px; /* Height of the navbar */
+    z-index: 10; /* Stack order */
+}
+
+/* Navbar brand styles */
+.navbar-brand {
+    display: flex; /* Flex container */
+    align-items: center; /* Center align items vertically */
+}
+
+/* Navbar logo styles */
+.navbar-logo {
+    width: 100px; /* Width of the logo */
+    height: 70px; /* Height of the logo */
+}
+
+/* Navbar menu styles */
+.navbar-menu {
+    list-style: none; /* Remove default list styles */
+    display: flex; /* Flex container */
+    margin: 0; /* Reset margin */
+    padding: 0; /* Reset padding */
+    margin-left: auto; /* Push menu items to the right */
+}
+
+/* Navbar menu item styles */
+.navbar-menu li {
+    margin-left: 20px; /* Space between menu items */
+}
+
+.navbar-menu a {
+    color: black; /* Black text color */
+    text-decoration: none; /* Remove underline */
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /* Font family */
+    padding: 8px 16px; /* Padding top and bottom 8px, left and right 16px */
+    font-size: 25px; /* Font size */
+    display: block; /* Display as block element */
+}
+
+.navbar-menu a:hover {
+    background-color: #575757; /* Dark background on hover */
+    border-radius: 4px; /* Rounded corners on hover */
+}
+
+/* Additional styling for navbar menu links */
+.navbar-menu li a {
+    color: black; /* Black text color */
+    text-decoration: none; /* Remove underline */
+    padding: 10px 20px; /* Padding top and bottom 10px, left and right 20px */
+    display: inline-block; /* Display as inline block */
+}
+
+.navbar-menu li a:hover {
+    background-color: #575757; /* Dark background on hover */
+    color: white; /* White text on hover */
+    border-radius: 5px; /* Rounded corners on hover */
+}
+
+/* Login button styles */
+.navbar-menu .btnLogin-popup {
+    width: 130px; /* Button width */
+    height: 50px; /* Button height */
+    background: transparent; /* Transparent background */
+    border: 2px solid; /* Border */
+    outline: none; /* Remove outline */
+    border-radius: 6px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    font-size: 25px; /* Font size */
+    color: white; /* White text color */
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; /* Font family */
+    font-weight: 500; /* Font weight */
+    transition: .5s; /* Transition effect */
+}
+
+.navbar-menu .btnLogin-popup:hover {
+    background: #575757; /* Dark background on hover */
+}
+
+/* Footer styles */
+.footer {
+    background-color: #000; /* Black background */
+    color: white; /* White text color */
+    padding: 20px; /* Padding */
+    text-align: center; /* Center align text */
+}
+
+/* Footer content styles */
+.footer-content {
+    max-width: 800px; /* Maximum width */
+    margin: auto; /* Center align horizontally */
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; /* Font family */
+}
+
+/* Footer heading and paragraph styles */
+.footer-content h3, .footer-content p {
+    margin: 5px 0; /* Margin top and bottom 5px, left and right 0 */
+}
+
+/* Styling for new arrivals section */
+.new-arrivals-section {
+    background-color: #4A249D; /* Purple background */
+    color: white; /* White text color */
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /* Font family */
+    text-align: center; /* Center align text */
+    padding: 30px; /* Padding */
+}
+
+/* Additional styling */
+.new {
+    padding: 30px; /* Padding */
+    font-family: 30px; /* Font family (incorrect syntax, needs correction) */
+}
+
+/* Book container styles */
+.book {
+    display: flex; /* Flex container */
+    flex-direction: column; /* Column layout */
+    align-items: center; /* Center align items vertically */
+    background-color: #f9f9f9; /* Light gray background */
+    border: 1px solid #ddd; /* Border */
+    color: black; /* Black text color */
+    margin-bottom: 20px; /* Margin bottom */
+    padding: 10px; /* Reduced padding */
+    width: 100%; /* Full width */
+    max-width: 1200px; /* Maximum width */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow */
+    height: auto; /* Ensures height adjusts to content */
+}
+
+/* Book content container styles */
+.book-content {
+    display: flex; /* Flex container */
+    align-items: center; /* Center align items vertically */
+    width: 100%; /* Full width */
+}
+
+/* Book text container styles */
+.book.left .book-text {
+    order: 1; /* Flex order */
+}
+
+.book.left .book-image {
+    order: 2; /* Flex order */
+}
+
+.book.right .book-text {
+    order: 2; /* Flex order */
+}
+
+.book.right .book-image {
+    order: 1; /* Flex order */
+}
+
+.book-text {
+    flex: 2; /* Flex grow */
+    padding: 10px; /* Reduced padding */
+}
+
+/* Book image container styles */
+.book-image {
+    flex: 1; /* Flex grow */
+    text-align: center; /* Center align text */
+}
+
+/* Book image styles */
+.book-image img {
+    max-width: 100%; /* Maximum width */
+    height: auto; /* Auto height */
+    max-height: 150px; /* Limit the image height */
+}

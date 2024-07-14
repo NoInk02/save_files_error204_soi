@@ -1,0 +1,37 @@
+[{
+  "_id": {
+    "$oid": "66945f46e73a5dd4ec48a28b"
+  },
+  "username": "dev",
+  "email": "ep23bt004@iitdh.ac.in",
+  "password": "123",
+  "favourite_book": "Deep Learning",
+  "favourite_author": "Ian Goodfellow, Yoshua Bengio, Aaron Courville",
+  "books_issued": [],
+  "__v": 8
+},
+{
+  "_id": {
+    "$oid": "669462c9f272693b15eb0f5b"
+  },
+  "username": "Richa",
+  "email": "cs23bt020@iitdh.ac.in",
+  "password": "abcd",
+  "favourite_book": "Quantum Physics: A Fundamental Approach to Modern Physics",
+  "favourite_author": "John S. Townsend",
+  "books_issued": [
+    {
+      "title": "Introduction to the Theory of Computation",
+      "issue_date": {
+        "$date": "2024-07-14T23:44:57.957Z"
+      },
+      "due_date": {
+        "$date": "2024-07-14T23:45:57.957Z"
+      },
+      "_id": {
+        "$oid": "669462f9f272693b15eb0f70"
+      }
+    }
+  ],
+  "__v": 3
+}]

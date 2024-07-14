@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <!-- Link to external stylesheet -->
+    <link rel="stylesheet" href="review.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header with navigation bar -->
+    <header>
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <img src="https://www.vidyamandir.com/Think-IIT-Think-VMC/assets/images/iit/iit-dharwad.png" alt="Brand Logo" class="navbar-logo">
+            </div>
+            <!-- Navigation links -->
+            <ul class="navbar-menu">
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="about.html">ABOUT</a></li>
+                <li><a href="service.html">SERVICES</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main content section -->
+    <div class="feed">
+        <h1>Provide Feedback</h1>
+        <!-- Review form -->
+        <form id="reviewForm">
+            <!-- Hidden fields for email and title -->
+            <input type="hidden" id="email" name="email" />
+            <input type="hidden" id="title" name="title" />
+            <!-- Text area for review input -->
+            <textarea id="review" name="review" placeholder="Write your review here..." required></textarea>
+            <!-- Rating stars -->
+            <div class="rating">
+                <input type="radio" id="star1" name="rating" value="1" /><label for="star1">&#9733;</label>
+                <input type="radio" id="star2" name="rating" value="2" /><label for="star2">&#9733;</label>
+                <input type="radio" id="star3" name="rating" value="3" /><label for="star3">&#9733;</label>
+                <input type="radio" id="star4" name="rating" value="4" /><label for="star4">&#9733;</label>
+                <input type="radio" id="star5" name="rating" value="5" /><label for="star5">&#9733;</label>
+            </div>
+            <!-- Submit button -->
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <!-- Script section -->
+    <script>
+        // Populate email and title from query parameters
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            document.getElementById('email').value = params.get('email');
+            document.getElementById('title').value = params.get('title');
+            document.getElementById('username').value = params.get('username');
+        });
+
+        // Update star colors based on selected rating
+        document.querySelectorAll('.rating input').forEach((input) => {
+            input.addEventListener('change', () => {
+                const selectedRating = input.value;
+                document.querySelectorAll('.rating label').forEach((label, index) => {
+                    if (index < selectedRating) {
+                        label.style.color = '#f90'; // Yellow color for selected stars
+                    } else {
+                        label.style.color = '#ccc'; // Gray color for unselected stars
+                    }
+                });
+            });
+        });
+
+        // Form submission handling
+        document.getElementById('reviewForm').addEventListener('submit', async (e) => {
+            e.preventDefault(); // Prevent default form submission
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData); // Convert form data to JSON object
+
+            try {
+                // Submit review data to server
+                const response = await fetch('/submit-review', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                // Handle response from server
+                const result = await response.json();
+                alert(result.message); // Display success or error message
+
+                // If submission is successful, redirect to profile page with updated information
+                if (result.success) {
+                    const params = new URLSearchParams(window.location.search);
+                    const email = params.get('email');
+                    const username = result.username;
+                    const fav_author = result.fav_author;
+                    const fav_book = result.fav_book;
+                    const books_issued = JSON.stringify(result.books_issued);
+
+                    // Redirect to profile.html with updated query parameters
+                    window.location.href = `/profile.html?email=${encodeURIComponent(email)}&username=${encodeURIComponent(username)}&fav_author=${encodeURIComponent(fav_author)}&fav_book=${encodeURIComponent(fav_book)}&books_issued=${encodeURIComponent(books_issued)}`;
+                }
+            } catch (error) {
+                // Handle error during submission
+                alert('An error occurred while submitting your review. Please try again later.');
+                console.error('Error submitting review:', error);
+            }
+        });
+    </script>
+
+    <!-- Footer section -->
+    <footer class="footer">
+        <div class="footer-content">
+            <h1>Contact Us</h1>
+            <p>Email: librarian@iitdh.ac.in</p>
+            <p>Phone:  (0836) 221 2824</p>
+            <p>Address: IIT Dharwad, Chikkamalligwad, Karnataka-560007</p>
+            <br>
+            <p style="font-family: Arial, Helvetica, sans-serif;">Copyrights &#169; 2023 IIT Dharwad Central Library. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="profile.css"> <!-- Link to custom CSS file -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap CSS link -->
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <img src="https://www.vidyamandir.com/Think-IIT-Think-VMC/assets/images/iit/iit-dharwad.png" alt="Brand Logo" class="navbar-logo">
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="about.html">ABOUT</a></li>
+                <li><a href="service.html">SERVICES</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="user-box">
+        <div id="user-info">
+            <h1>Welcome <span id="username"></span>!</h1>
+            <!-- Placeholder for username -->
+            <p><strong>Email:</strong> <span id="email"></span></p>
+            <!-- Placeholder for email -->
+            <p><strong>Favorite Author:</strong> <span id="fav-author"></span></p>
+            <!-- Placeholder for favorite author -->
+            <p><strong>Favorite Book:</strong> <span id="fav-book"></span></p>
+            <!-- Placeholder for favorite book -->
+            <p><strong>Books Issued:</strong> <ul id="books-issued"></ul></p>
+            <!-- List to display issued books -->
+        </div>
+        <img src="/user.png" alt="User Image" class="user-image">
+        <!-- Placeholder for user image -->
+    </div>
+    <div class="container">
+        <div class="search-box">
+            <p>Search for a book by:</p>
+            <div class="search-bar">
+                <select id="search-category">
+                    <option value="title">Title</option>
+                    <option value="author">Author</option>
+                    <option value="genre">Genre</option>
+                </select>
+                <!-- Dropdown for search category -->
+                <input type="text" id="search-value" placeholder="Enter search term">
+                <!-- Input field for search term -->
+                <button id="search-button">Search</button>
+                <!-- Button to trigger search -->
+            </div>
+        </div>
+        <div class="refresh-box">
+            <p>To update the changes in your profile, click here.</p>
+            <button id="refresh-profile">Refresh Profile</button>
+            <!-- Button to refresh profile information -->
+        </div>
+    </div>
+    <div class="recommendation-box">
+        <h2>Recommended Books</h2>
+        <div id="recommended-books">
+            <!-- Placeholder for recommended books -->
+        </div>
+    </div>
+    <script>
+        // Retrieve URL parameters from the current page's URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const username = urlParams.get('username'); // Get the username from URL
+        const email = urlParams.get('email'); // Get the email from URL
+        const fav_author = urlParams.get('fav_author'); // Get the favorite author from URL
+        const fav_book = urlParams.get('fav_book'); // Get the favorite book from URL
+        const booksIssued = JSON.parse(urlParams.get('books_issued')); // Parse the books issued JSON string from URL
+    
+        // Update the text content of HTML elements with the retrieved user information
+        document.getElementById('username').textContent = username;
+        document.getElementById('email').textContent = email;
+        document.getElementById('fav-author').textContent = fav_author;
+        document.getElementById('fav-book').textContent = fav_book;
+    
+        // Dynamically display issued books on the page
+        const booksIssuedList = document.getElementById('books-issued');
+        booksIssued.forEach(book => {
+            const listItem = document.createElement('li'); // Create a list item element
+            listItem.textContent = `${book.title} - Due: ${new Date(book.due_date).toLocaleDateString()}`; // Set the text content to book title and due date
+    
+            // Create a return button for each book
+            const returnButton = document.createElement('button');
+            returnButton.textContent = 'Return';
+            returnButton.addEventListener('click', () => returnBook(book.title)); // Add event listener to handle book return
+    
+            listItem.appendChild(returnButton); // Append the return button to the list item
+            booksIssuedList.appendChild(listItem); // Append the list item to the issued books list
+        });
+    
+        // Event listener for the search button click
+        document.getElementById('search-button').addEventListener('click', () => {
+            const category = document.getElementById('search-category').value; // Get the selected search category
+            const value = document.getElementById('search-value').value; // Get the search value entered by the user
+            // Redirect to the search profile page with the search parameters and user email
+            window.location.href = `/search_profile.html?category=${encodeURIComponent(category)}&value=${encodeURIComponent(value)}&email=${encodeURIComponent(email)}`;
+        });
+    
+        // Event listener for the refresh profile button click
+        document.getElementById('refresh-profile').addEventListener('click', () => {
+            fetchUserProfile(email); // Fetch the updated user profile information
+        });
+    
+        // Function to fetch user profile information from the server
+        function fetchUserProfile(email) {
+            fetch(`/profile?email=${encodeURIComponent(email)}`)
+                .then(response => response.json()) // Parse the JSON response
+                .then(data => {
+                    // Update the page with the fetched user information
+                    document.getElementById('username').textContent = data.username;
+                    document.getElementById('email').textContent = data.email;
+                    document.getElementById('fav-author').textContent = data.favourite_author;
+                    document.getElementById('fav-book').textContent = data.favourite_book;
+    
+                    // Clear the issued books list and update it with the new data
+                    const booksIssuedList = document.getElementById('books-issued');
+                    booksIssuedList.innerHTML = ''; // Clear existing list items
+                    if (data.books_issued.length > 0) {
+                        data.books_issued.forEach(book => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = `${book.title} - Due: ${new Date(book.due_date).toLocaleDateString()}`;
+    
+                            const returnButton = document.createElement('button');
+                            returnButton.textContent = 'Return';
+                            returnButton.addEventListener('click', () => returnBook(book.title));
+    
+                            listItem.appendChild(returnButton);
+                            booksIssuedList.appendChild(listItem);
+                        });
+                    } else {
+                        booksIssuedList.textContent = 'No books issued.'; // Display message if no books are issued
+                    }
+                    fetchRecommendations(data.books_issued); // Fetch book recommendations based on issued books
+                })
+                .catch(error => {
+                    console.error('Error fetching user profile:', error);
+                    document.getElementById('user-info').textContent = 'Error fetching user profile.'; // Display error message
+                });
+        }
+    
+        // Function to fetch recommended books based on the user's issued books
+        function fetchRecommendations(booksIssued) {
+            fetch('/recommendations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ booksIssued }) // Send the list of issued books to the server
+            })
+            .then(response => response.json()) // Parse the JSON response
+            .then(recommendations => {
+                const recommendedBooksList = document.getElementById('recommended-books');
+                recommendedBooksList.innerHTML = ''; // Clear existing recommendations
+                if (recommendations.length > 0) {
+                    recommendations.forEach(book => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `${book.title} by ${book.author}`;
+                        recommendedBooksList.appendChild(listItem);
+                    });
+                } else {
+                    recommendedBooksList.textContent = 'No recommendations available.'; // Display message if no recommendations are available
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching recommendations:', error);
+            });
+        }
+    
+        // Function to handle returning a book
+        function returnBook(title) {
+            fetch('/return-book', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, title }) // Send the email and book title to the server
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Prompt the user to write a review after returning the book
+                    if (confirm('Do you want to write a review for the book?')) {
+                        window.location.href = `/review.html?title=${encodeURIComponent(title)}&email=${encodeURIComponent(email)}`;
+                    } else {
+                        fetchUserProfile(email); // Refresh the profile after returning the book
+                    }
+                } else {
+                    console.error('Error returning book');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    
+        // Initial fetch to get user profile and recommendations when the page loads
+        fetchUserProfile(email);
+    </script>    
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <h1>Contact Us</h1>
+            <p>Email: librarian@iitdh.ac.in</p>
+            <p>Phone:  (0836) 221 2824</p>
+            <p>Address: IIT Dharwad, Chikkamalligwad,Karnataka-560007</p>
+            <br>
+            <p style="font-family: Arial, Helvetica, sans-serif;">Copyrights &#169 2023 IIT Dharwad Central Library. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
