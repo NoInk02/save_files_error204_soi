@@ -1,70 +1,56 @@
-# DevShelf- Error_204
+# Library Management System
 
-- All files are to be downloaded as they are uploaded in the repo. 
-- Public folder contains all the html and css files.
-- config contains db.js which connects to the mongodb database management system
-- models contain java script for storing data
-- UpdatedDatasetSOI.json contains the dataset that was provided
-- index.js contains most of our backend
-- node_modules directory has not been uploaded as it was very big folder
-  
-Rough structure should be something like this:
-```
-project-root/
-│
-├── node_modules/
-│
-│── config/
-│   └── db.js
-|
-│── models/
-|   ├── user.js
-│   └── book.js
-│
-├── public/
-│   ├── index.html
-│   ├── register.html
-│   ├── profile.html
-│   └── (other static image, html and css files)
-│
-├── index.js
-│ 
-├── users.json
-├── UpdatedDatasetSOI.json
-│
-├── package.json
-└── package-lock.json
-```
+## Overview
 
-- Just download the files in this manner and all the dependencies present in package.json, then enter node index.js in the terminal and press enter. Then go to your web browser and type localhost:3000 and press enter.
+Welcome to our Library Management System (LMS), a comprehensive platform designed to manage books, user accounts, and borrowing activities seamlessly within our institution. Whether you're a student, faculty member, or library administrator of IIT-Dh, our LMS offers a range of features to enhance your library experience.
 
-- Below is a description of each file's use :-
+### Key Features
 
-- `index.js`: Provides endpoints for user registration, login, book search, adding books to cart with stock management, and user profile retrieval, all backed by JSON file storage.
+- **User Registration and Authentication**: New users can register with their credentials, including OTP validation for IITDh email addresses only. User profiles are stored securely in our MongoDB database.
 
-- `users.json`: Stores data of the user.
+- **Book Search and Browsing**: Easily search and browse books by title, author, or genre. View detailed book information and availability.
 
-- `UpdatedDatasetSOI.json`: Dataset provided for the project.
+- **Borrowing and Returning Books**: Users can borrow books directly from the search results. Borrowed books are displayed in the user's profile with due dates and can be returned with a simple process that includes optional feedback and ratings.
 
-- `about.html`: Structure of the design page.
+### Additional Features
 
-- `index.html`: Structure of the home page.
+- **OTP Validation**: Secure registration process with email OTP verification ensuring valid IITDh email addresses only. OTPs are sent using nodemailer with a 5-minute validity period.
 
-- `profile.html`: Structure of the profile page.
+- **Unique User Management**: Ensured uniqueness of email addresses and usernames to prevent duplicate profiles.
 
-- `register.html`: Structure of the registration page.
+- **Enhanced Search Experience**: User-friendly search bars with options for partial searches and case insensitivity. Search results display relevant book details with the option to view more.
 
-- `search_profile.html`: Structure of the search page that opens after logging in.
+- **New Arrivals**: Display of the latest books added to the library collection automatically updated on the homepage.
 
-- `search.html`: Structure of the search page accessed from the home page.
+- **Recommendations**: Personalized book recommendations based on title, author, genre, or department, helping users discover relevant books.
 
-- `stylef.css`: Stores the design styles of the pages.
+- **Feedback and Reviews**: Users can leave feedback and ratings upon returning books, stored in the database under a 'reviews' collection. Reviews help other users make informed borrowing decisions.
 
-- `report_2.pdf`: report_2 of Error_204
+- **Due Date Reminders**: Automated email reminders sent to users for overdue books, promoting timely returns.
 
-- `report_1.pdf`: report_1 of Error_204
+- **Announcements Section**: Important notifications displayed on the homepage using Bootstrap's scrollspy-container feature.
 
-Team Members: 
-- Richa Rajashekhar
-- Dev Kaushal
+- **About, Services, and Contact Pages**: Standard pages providing information about the library, its services, and contact details, enhancing user experience and accessibility.
+
+## Technologies Used
+
+- Node.js
+- Express.js
+- MongoDB
+- Bootstrap
+- nodemailer
+- node-cron
+
+## Installation
+
+Ensure you have Node.js and MongoDB installed. Clone the repository, install dependencies, and set up environment variables.
+
+## Getting Started
+
+1. Install dependencies with `npm install`.
+2. Import the data from LibraryDB.book.json into your mongo book collection.
+3. Start the server with `npm index.js`.
+4. Navigate to `http://localhost:3000` in your browser.
+
+
 
