@@ -68,8 +68,9 @@ Ensure you have Node.js and MongoDB installed. Download the zip files,extract th
 3. Start the server with `npm index.js`.
 4. Navigate to `http://localhost:3000` in your browser.
 
-Team:- Error_204
-Members:-
+## Team:- 
+- Error_204
+## Members:-
 - Richa Rajashekhar(Team Leader)
 - Dev Kaushal
 
