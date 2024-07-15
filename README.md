@@ -70,8 +70,8 @@ Ensure you have Node.js and MongoDB installed. Download the zip files,extract th
 
 Team:- Error_204
 Members:-
-- `Richa Rajashekhar`: Team Leader
-- `Dev Kaushal`
+- Richa Rajashekhar(Team Leader)
+- Dev Kaushal
 
 
 
